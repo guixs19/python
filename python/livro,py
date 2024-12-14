@@ -1,0 +1,16 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+url="https://books.toscrape.com/"
+headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
+requesicao=requests.get(url,headers=headers)
+site=BeautifulSoup(requesicao.text,"html.parser")
+tags=site.find_all("a")
+for tag in tags:
+    if "title" in tag.attrs:
+        nome=tag["title"]
+preco=site.find_all("p",class_:="price_color")
+disponibilidade=site.find_all("p",class_:="instock availability")
+df=pd.DataFrame({f"nome":nome,
+                 "Preço":preco,
+                 "disponibilidade":disponibilidade
